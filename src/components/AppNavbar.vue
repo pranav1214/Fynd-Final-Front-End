@@ -1,7 +1,26 @@
 <template>
     <nav class="navbar navbar-expand-lg  navbar-light bg-light">
         <div class="container">
-            <ul class="nav navbar-nav">
+            <template v-if="isAuthenticated">
+                <ul class="nav navbar-nav">
+                    <a class="navbar-brand" href="/">Grocery Shop</a>
+                    <li class="nav-item">
+                        <router-link class="nav-link" :to="links[2]">
+                            Products
+                        </router-link>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <span class="nav-link">Hello <span class="text-primary">{{ email }}</span>
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <span class="nav-link cursor-pointer" @click="logout()">Logout</span>
+                    </li>
+                </ul>
+            </template>
+            <ul class="nav navbar-nav" v-else>
                 <li class="nav-item">
                     <router-link class="nav-link" :to="links[0]">
                         Login
@@ -13,17 +32,11 @@
                     </router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link class="nav-link" :to="links[2]">
-                        Products
-                    </router-link>
+                        <router-link class="nav-link" :to="links[2]">
+                            Products
+                        </router-link>
                 </li>
-                <!-- <li class="nav-item">
-                    <span class="nav-link">Hello <span class="text-primary">{{ email }}</span>
-                    </span>
-                </li> -->
-                <li class="nav-item">
-                    <span class="nav-link cursor-pointer" @click="logout()">Logout</span>
-                 </li>
+                
             </ul>
         </div>
     </nav>

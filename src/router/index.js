@@ -51,13 +51,13 @@ const router = new Router( {
                     name: "editproduct",
                     path: "/admin/edit",
                     component: EditProduct,
-                    // meta: { requiresAuth: true, adminAuth: true, generalAuth: false  }
+                    meta: { requiresAuth: true, adminAuth: true, generalAuth: false  }
                 },
                 {
                     name: "editproductdetail",
                     path: "/admin/edit/:id",
                     component: EditProductDetail,
-                    // meta: { requiresAuth: true, adminAuth: true, generalAuth: false  }
+                    meta: { requiresAuth: true, adminAuth: true, generalAuth: false  }
                 }
             ]
         },
@@ -77,28 +77,46 @@ const router = new Router( {
 
 //Global auth guard
 router.beforeEach( ( to, from, next ) => {
+    const authUser = JSON.parse( window.localStorage.getItem( 'lbitem' ) );
     console.log( store.getters.isAuthenticated );
-    if( to.meta.requiresAuth ){
-        const authUser = JSON.parse( window.localStorage.getItem( 'lbitem' ) );
-        if( !authUser || !authUser.token ){
-            next( '/login' )
-        }else if( to.meta.adminAuth ){
-            const authUser = JSON.parse( window.localStorage.getItem( 'lbitem' ) );
-            if( authUser.data.role === 'admin' ){
-                next( '/admin' );
-            }else{
-                next( '/' );
-            }
-        }else if( to.meta.generalAuth ){
-            const authUser = JSON.parse( window.localStorage.getItem( 'lbitem' ) )
-            if( authUser.data.role === 'general' ){
-                next( '/' );
-            }else{
-                console.log( 'Admin logged in' );
-                next( '/admin' );
-            }
-        }
+    if( to.meta.requiresAuth && !store.getters.isAuthenticated ){
+        
+        return next( '/login' )
     }
+    else {
+        if( authUser.data.role !== 'admin' && to.meta.adminAuth ){
+            return next( { name: "page-not-found" } )
+        }
+        next()
+    }  
+    // else if( to.meta.adminAuth && authUser.data.role === 'admin'  ){
+    //     return next( '/admin' )
+    // }
+    
+    // if( to.meta.generalAuth && authUser.data.role === 'general' ){
+    //     return next( '/' )
+    // }
+
+
+
+    //     if( !authUser || !authUser.token ){
+    //        return next( '/login' )
+    //     }
+    //     if( to.meta.adminAuth && authUser.data.role === 'admin' ){
+    //           return next( '/admin' );
+    //         }else{
+    //             next( '/' );
+    //         }
+    //     }else if( to.meta.generalAuth ){
+    //         const authUser = JSON.parse( window.localStorage.getItem( 'lbitem' ) )
+    //         if( authUser.data.role === 'general' ){
+    //             next( '/' );
+    //         }else{
+    //             console.log( 'Admin logged in' );
+    //             next( '/admin' );
+    //         }
+    //     }
+    // }
     //  if( to.meta.authorize && !store.getters.isAuthenticated ) {
     //      const authUser = JSON.parse( window.localStorage.getItem( 'lbitem' ) );
     //      console.log( authUser.data.role )
@@ -106,9 +124,9 @@ router.beforeEach( ( to, from, next ) => {
     //         name: "login",
     //     } );
     // }
-    else{
-        next();
-    }
+    // else{
+    //     next();
+    // }
 } );
 
 export default router;

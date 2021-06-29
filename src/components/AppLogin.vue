@@ -72,9 +72,9 @@
                     </button>
                     <app-spinner v-if="processing" />
                 </div>
-                <a href="#" class="me-0 text-body fw-bold">
+                <!-- <a href="#" class="me-0 text-body fw-bold">
                     Forgot Password
-                </a>
+                </a> -->
             </form>
 
             <div class="mt-2">
@@ -137,7 +137,7 @@ export default {
                             this.$store.state.isLoggedIn = true;
                             window.localStorage.setItem( 'lbitem', JSON.stringify( authUser ) );
                             if( authUser.data.role === 'admin' ){
-                                this.$router.push( { name: "admin" } );
+                                this.$router.push( { name: "addproduct" } );
                                 Vue.$toast.open( { 
                                     message: "Admin Login successful",
                                     duration: 5000,

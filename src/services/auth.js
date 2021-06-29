@@ -75,8 +75,8 @@ const addProduct = ( credentials ) => {
 };
 
 // Edit Product details Admin side
-const editProduct = ( id, credentials ) => {
-    return axios.patch( `http://localhost:3000/product/${id}`, credentials,
+const editProduct = ( product ) => {
+    return axios.patch( `http://localhost:3000/product/${product._id}`, product,
     {
         headers: {
             "Content-Type": "application/json",

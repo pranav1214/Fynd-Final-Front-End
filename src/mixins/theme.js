@@ -4,14 +4,14 @@ export const themeMixin = {
             type: String,
             validator( value ){
                 return [
-                    " primary ",
-                    " secondary ",
-                    " success ",
-                    " danger ",
-                    " warning ",
-                    " info ",
-                    " light ",
-                    " dark "
+                    "primary",
+                    "secondary",
+                    "success",
+                    "danger",
+                    "warning",
+                    "info",
+                    "light",
+                    "dark"
                 ].includes( value );
             },
         },

@@ -30,7 +30,7 @@ export default {
             type: Object,
             required: true,
             validator( value ){
-                return value.name && value.id
+                return value.name && value._id
             }
         }
     }

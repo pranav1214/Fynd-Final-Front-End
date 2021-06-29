@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <form class="mt-4" name="aform" @submit.prevent="addproduct">
+        <form class="mt-4" name="aform" @submit.prevent="addproduct" enctype="multipart/form-data">
             <div class="container">
                 <h3>
                     Add Product
@@ -87,9 +87,44 @@
                     </div>
                 </div>
 
+                <!-- Product price and validation -->
+
+                <div class="form-group my-2 mx-2 me-5">
+                    <label for="category" class="my-2">
+                        Product Price
+                    </label>
+                    <input type="number"
+                    name="price"
+                    id="price"
+                    class="form-control"
+                    placeholder="Enter product price"
+                    v-model="aform.price"
+                    @blur="$v.aform.price.$touch()"
+                    :class="{
+                        'is-invalid': shouldAppendErrorClass($v.aform.price),
+                        'is-valid': shouldAppendValidClass($v.aform.price)
+                    }" />
+
+                    <div v-if="$v.aform.price.$error">
+                        <div v-if="!$v.aform.price.required" class="text-danger">
+                            <small>
+                                This field is  required
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Image uploader -->
                 <div class="form-group my-2 mx-2 me-5">
-                    Image uploader
+                    <label for="image" class="my-2">
+                        Upload product image
+                    </label>
+                    <input type="file" 
+                    name="image"
+                    id="image"
+                    class="form-control"
+                    @change="onSelect"
+                    /> 
                 </div>
 
                 <div class="form-group my-3 mx-2">
@@ -117,7 +152,9 @@ export default {
             aform:{
                 name: "",
                 description: "",
-                category: ""
+                category: "",
+                price: "",
+                image: ""
             },
         };
     },
@@ -131,6 +168,9 @@ export default {
             },
             category: {
                 required
+            },
+            price: {
+                required
             }
         },
     },
@@ -140,6 +180,10 @@ export default {
         },
         shouldAppendValidClass( field ){
             return !field.$invalid && field.$model && field.$dirty;
+        },
+        onSelect(){
+            const image = this.$refs.file.files[0];
+            this.image = image;
         },
         addProduct(){
             this.$v.aform.$touch();
